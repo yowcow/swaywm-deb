@@ -1,0 +1,7 @@
+Package: yowcow-sway
+Name: yowcow-sway
+Description: swaywm
+Maintainer: Yoko OYAMA <yowcow@gmail.com>
+Version: {{PKGVERSION}}-{{PKGRELEASE}}
+Conflicts: sway
+Architecture: {{ARCH}}

@@ -1,0 +1,4 @@
+*.deb
+
+/sway/sway
+/wlroots/wlroots

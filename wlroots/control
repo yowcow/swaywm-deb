@@ -1,0 +1,7 @@
+Package: yowcow-wlroots
+Name: yowcow-wlroots
+Description: wlroots
+Maintainer: Yoko OYAMA <yowcow@gmail.com>
+Version: {{PKGVERSION}}-{{PKGRELEASE}}
+Conflicts: wlroots
+Architecture: {{ARCH}}
