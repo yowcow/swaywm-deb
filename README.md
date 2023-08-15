@@ -14,7 +14,7 @@ checkout wlroots and sway:
 
     make checkout
 
-tweak wlroots and sway revision to the ones you want...
+tweak wlroots and sway revisions/tags to the ones you want...
 
 build deb packages:
 
