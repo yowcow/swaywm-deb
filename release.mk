@@ -1,0 +1,2 @@
+PKGRELEASE := 1
+ARCH := amd64

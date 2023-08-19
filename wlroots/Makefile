@@ -1,7 +1,7 @@
+include ../release.mk
+
 PKGVERSION = 0.16.2
-PKGRELEASE = 0
 UBUNTU_RELEASE = $(shell lsb_release -rs)
-ARCH = amd64
 ARTIFACTS = yowcow-wlroots.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
 
 INSTALL_DIR := /tmp/wlroots
