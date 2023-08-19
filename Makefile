@@ -35,7 +35,8 @@ wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/wlro
 	docker run --rm \
 		-v `pwd`:/app:rw \
 		-w /app/wlroots $(DOCKER_IMAGE) \
-			sh -c "make PKGVERSION=$(WLROOTS_REVISION) PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) $(notdir $@)"
+			sh -c "pwd && ls -alh"
+			#sh -c "make PKGVERSION=$(WLROOTS_REVISION) PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) $(notdir $@)"
 
 sway/yowcow-sway.$(SWAY_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX) sway/sway
 	docker run --rm \
