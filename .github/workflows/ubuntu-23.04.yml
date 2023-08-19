@@ -12,11 +12,15 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: apt install
-        run: apt-get update && apt-get install -yq make docker.io
-      - name: docker build
-        run: make all
-      - name: build
-        run: make build
+        run:
+          - sh ./apt-install.ubuntu-23.04.sh
+      - name: build wlroots
+        run:
+          - make -C wlroots all build
+      - name: build sway
+        run:
+          - make -C wlroots install
+          - make -C sway all build
       - name: release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
