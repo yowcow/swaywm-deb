@@ -12,7 +12,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: apt install
-        run: apt-get update && apt-get install make docker.io
+        run: apt-get update && apt-get install -yq make docker.io
       - name: docker build
         run: make all
       - name: build
