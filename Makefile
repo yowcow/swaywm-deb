@@ -27,6 +27,9 @@ build: $(ARTIFACTS)
 clean:
 	rm -rf $(ARTIFACTS)
 
+realclean: clean
+	docker rmi $(DOCKER_IMAGE)
+
 wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/wlroots
 	docker run --rm -it \
 		-v `pwd`:/app:rw \
@@ -41,4 +44,4 @@ sway/yowcow-sway.$(SWAY_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/yowcow-wlroot
 
 force:
 
-.PHONY: all build clean
+.PHONY: all build clean realclean
