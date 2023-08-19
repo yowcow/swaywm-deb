@@ -1,7 +1,7 @@
 UBUNTU_RELEASE := 23.04
 DOCKER_IMAGE := swaywm-build:$(UBUNTU_RELEASE)
 
-PKGRELEASE := 0
+PKGRELEASE := 1
 ARCH := amd64
 
 all:
