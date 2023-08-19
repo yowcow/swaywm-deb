@@ -23,6 +23,7 @@ apt-get update && apt-get install -yq \
     libxkbcommon-dev \
     libxcb-res0-dev \
     libxcb-present-dev \
+    lsb-release \
     meson \
     ninja-build \
     pkg-config \
