@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: apt install
+        run: apt-get update && apt-get install make docker.io
       - name: docker build
         run: make all
       - name: build
