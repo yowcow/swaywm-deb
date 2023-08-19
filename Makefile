@@ -31,13 +31,13 @@ realclean: clean
 	docker rmi $(DOCKER_IMAGE)
 
 wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/wlroots
-	docker run --rm -it \
+	docker run --rm \
 		-v `pwd`:/app:rw \
 		-w /app/wlroots $(DOCKER_IMAGE) \
 			make PKGVERSION=$(WLROOTS_REVISION) PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) $(notdir $@)
 
 sway/yowcow-sway.$(SWAY_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX) sway/sway
-	docker run --rm -it \
+	docker run --rm \
 		-v `pwd`:/app:rw \
 		-w /app/sway $(DOCKER_IMAGE) \
 			sh -c "dpkg -i ../$< && make PKGVERSION=$(SWAY_REVISION) PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) $(notdir $@)"
