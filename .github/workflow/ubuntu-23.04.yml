@@ -1,0 +1,24 @@
+on: [push]
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:23.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: apt install
+        run: sh ./apt-install.ubuntu-23.04.sh
+      - name: build
+        run: make build
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            wlroots/*.deb
+            sway/*.deb
