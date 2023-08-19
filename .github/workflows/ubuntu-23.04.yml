@@ -11,8 +11,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: apt install
-        run: sh ./apt-install.ubuntu-23.04.sh
+      - name: docker build
+        run: make all
       - name: build
         run: make build
       - name: release
