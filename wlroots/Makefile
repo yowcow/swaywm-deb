@@ -1,6 +1,19 @@
+PKGVERSION = 0.16.2
+PKGRELEASE = 0
+UBUNTU_RELEASE = $(shell lsb_release -rs)
+ARCH = amd64
+ARTIFACTS = yowcow-wlroots.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
+
 INSTALL_DIR := /tmp/wlroots
 
-all:
+all: wlroots
+
+wlroots: CURRENT_REVISION = $(shell git -C $@ describe --tags)
+wlroots: force
+	[ ! -d $@ ] && git clone https://gitlab.freedesktop.org/wlroots/wlroots.git $@ || true;
+	[ "$(CURRENT_REVISION)" != "$(PKGVERSION)" ] && git -C $@ fetch && git -C $@ checkout $(PKGVERSION) || true;
+
+build: $(ARTIFACTS)
 
 %.deb: $(INSTALL_DIR) $(INSTALL_DIR)/DEBIAN/control
 	dpkg-deb --build $< $@
@@ -18,7 +31,12 @@ $(INSTALL_DIR)/DEBIAN/control: control
 		| sed -e 's/{{ARCH}}/$(ARCH)/g' \
 		> $@
 
+install: $(ARTIFACTS)
+	dpkg -i $^
+
+force:
+
 clean:
 	rm -rf $(INSTALL_DIR) *.deb
 
-.PHONY: all clean
+.PHONY: all build install clean

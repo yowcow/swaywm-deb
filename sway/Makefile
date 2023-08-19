@@ -1,6 +1,19 @@
+PKGVERSION = 1.8.1
+PKGRELEASE = 0
+UBUNTU_RELEASE = $(shell lsb_release -rs)
+ARCH = amd64
+ARTIFACTS = yowcow-sway.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
+
 INSTALL_DIR := /tmp/sway
 
-all:
+all: sway
+
+sway: CURRENT_REVISION = $(shell git -C $@ describe --tags)
+sway: force
+	[ ! -d $@ ] && git clone https://github.com/swaywm/sway.git $@ || true;
+	[ "$(CURRENT_REVISION)" != "$(PKGVERSION)" ] && git -C $@ fetch && git -C $@ checkout $(PKGVERSION) || true;
+
+build: $(ARTIFACTS)
 
 %.deb: $(INSTALL_DIR) $(INSTALL_DIR)/DEBIAN/control
 	dpkg-deb --build $< $@
@@ -18,7 +31,12 @@ $(INSTALL_DIR)/DEBIAN/control: control
 		| sed -e 's/{{ARCH}}/$(ARCH)/g' \
 		> $@
 
+install: $(ARTIFACTS)
+	dpkg -i $^
+
+force:
+
 clean:
 	rm -rf $(INSTALL_DIR) *.deb
 
-.PHONY: all clean
+.PHONY: all build install clean

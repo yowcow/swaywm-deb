@@ -1,5 +1,5 @@
 FROM ubuntu:23.04
 
-COPY apt-install.ubuntu-23.04.sh /tmp
+COPY apt-install.ubuntu-23.04.sh /tmp/
 
 RUN sh /tmp/apt-install.ubuntu-23.04.sh
