@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ubuntu:23.04
+    permissions:
+      contents: write
     steps:
       - name: checkout
         uses: actions/checkout@v3
