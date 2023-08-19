@@ -1,26 +1,44 @@
-IMAGE := swaywm-build
+UBUNTU_RELEASE := 23.04
+DOCKER_IMAGE := swaywm-build:$(UBUNTU_RELEASE)
+
+SWAY_REVISION := 1.8.1
+WLROOTS_REVISION := 0.16.2
+PKGRELEASE := 1
+ARCH := amd64
+SUFFIX := ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
+
+ARTIFACTS := wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX) sway/yowcow-sway.$(SWAY_REVISION)-$(PKGRELEASE).$(SUFFIX)
 
 all:
-	docker build -t $(IMAGE) .
+	docker build -t $(DOCKER_IMAGE) -f Dockerfile.ubuntu-$(UBUNTU_RELEASE) .
 
-checkout: wlroots/wlroots sway/sway
+wlroots/wlroots: CURRENT_WLROOTS_REVISION = $(shell git -C $@ describe --tags)
+wlroots/wlroots: force
+	[ ! -d $@ ] && git clone https://gitlab.freedesktop.org/wlroots/wlroots.git $@ || true;
+	[ "$(CURRENT_WLROOTS_REVISION)" != "$(WLROOTS_REVISION)" ] && git -C $@ fetch && git -C $@ checkout $(WLROOTS_REVISION) || true;
 
-build: wlroots/yowcow-wlroots.deb sway/yowcow-sway.deb
+sway/sway: CURRENT_SWAY_REVISION = $(shell git -C $@ describe --tags)
+sway/sway: force
+	[ ! -d $@ ] && git clone git@github.com:swaywm/sway.git $@ || true;
+	[ "$(CURRENT_SWAY_REVISION)" != "$(SWAY_REVISION)" ] && git -C $@ fetch && git -C $@ checkout $(SWAY_REVISION) || true;
 
-wlroots/yowcow-wlroots.deb: wlroots/wlroots
+build: $(ARTIFACTS)
+
+clean:
+	rm -rf $(ARTIFACTS)
+
+wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/wlroots
 	docker run --rm -it \
 		-v `pwd`:/app:rw \
-		-w /app/wlroots $(IMAGE) \
-			make PKGVERSION=$(shell git -C $< describe --tags) PKGRELEASE=1 ARCH=amd64 clean $(notdir $@)
+		-w /app/wlroots $(DOCKER_IMAGE) \
+			make PKGVERSION=$(WLROOTS_REVISION) PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) $(notdir $@)
 
-wlroots/wlroots:
-	git clone https://gitlab.freedesktop.org/wlroots/wlroots.git $@
-
-sway/yowcow-sway.deb: sway/sway wlroots/yowcow-wlroots.deb
+sway/yowcow-sway.$(SWAY_REVISION)-$(PKGRELEASE).$(SUFFIX): wlroots/yowcow-wlroots.$(WLROOTS_REVISION)-$(PKGRELEASE).$(SUFFIX) sway/sway
 	docker run --rm -it \
 		-v `pwd`:/app:rw \
-		-w /app/sway $(IMAGE) \
-			sh -c "dpkg -i ../wlroots/yowcow-wlroots.deb && make PKGVERSION=$(shell git -C $< describe --tags) PKGRELEASE=1 ARCH=amd64 clean $(notdir $@)"
+		-w /app/sway $(DOCKER_IMAGE) \
+			sh -c "dpkg -i ../$< && make PKGVERSION=$(SWAY_REVISION) PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) $(notdir $@)"
 
-sway/sway:
-	git clone git@github.com:swaywm/sway.git $@
+force:
+
+.PHONY: all build clean
