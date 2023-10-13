@@ -1,2 +1,2 @@
-PKGRELEASE := 1
+PKGRELEASE := 2
 ARCH := amd64
