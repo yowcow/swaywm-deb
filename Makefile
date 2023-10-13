@@ -3,8 +3,12 @@ DOCKER_IMAGE := swaywm-build:$(UBUNTU_RELEASE)
 
 include release.mk
 
-all:
-	docker build -t $(DOCKER_IMAGE) -f Dockerfile.ubuntu-$(UBUNTU_RELEASE) .
+all: Dockerfile
+	docker build \
+		--build-arg="UBUNTU_RELEASE=$(UBUNTU_RELEASE)" \
+		-t $(DOCKER_IMAGE) \
+		-f $< \
+		.
 
 build:
 	docker run --rm \
