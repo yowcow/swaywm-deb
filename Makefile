@@ -20,4 +20,10 @@ build:
 		-w /app/sway $(DOCKER_IMAGE) \
 			sh -c "make -C ../wlroots install && make PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) all build"
 
-.PHONY: all build
+shell:
+	docker run -it --rm \
+		-v `pwd`:/app:rw \
+		-w /app $(DOCKER_IMAGE) \
+			bash
+
+.PHONY: all build shell
