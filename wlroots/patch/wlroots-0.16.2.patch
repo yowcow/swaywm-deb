@@ -1,0 +1,16 @@
+diff --git a/examples/dmabuf-capture.c b/examples/dmabuf-capture.c
+index 58bf6419..ec6b3213 100644
+--- a/examples/dmabuf-capture.c
++++ b/examples/dmabuf-capture.c
+@@ -521,7 +521,10 @@ static void *vid_encode_thread(void *arg) {
+ 		};
+ 
+ 		av_log(ctx, AV_LOG_INFO, "Encoded frame %i (%i in queue)\n",
+-				ctx->avctx->frame_number, get_fifo_size(&ctx->vid_frames));
++				// frame_number is deprecated.
++				// See https://aur.archlinux.org/packages/wlroots-nvidia?all_deps=1
++				//ctx->avctx->frame_number,
++				0, get_fifo_size(&ctx->vid_frames));
+ 
+ 	} while (!ctx->err);
+ 

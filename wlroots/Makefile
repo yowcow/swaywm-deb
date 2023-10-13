@@ -6,7 +6,10 @@ ARTIFACTS = yowcow-wlroots.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).
 
 INSTALL_DIR := /tmp/wlroots
 
-all: wlroots
+all: patch/wlroots-$(PKGVERSION).patch wlroots
+	[ -f $< ] && patch -p1 -N -d wlroots < $< || true
+
+patch/%: force
 
 wlroots: CURRENT_REVISION = $(shell git -C $@ describe --tags)
 wlroots: force
