@@ -3,8 +3,12 @@ DOCKER_IMAGE := swaywm-build:$(UBUNTU_RELEASE)
 
 include release.mk
 
-all:
-	docker build -t $(DOCKER_IMAGE) -f Dockerfile.ubuntu-$(UBUNTU_RELEASE) .
+all: Dockerfile
+	docker build \
+		--build-arg="UBUNTU_RELEASE=$(UBUNTU_RELEASE)" \
+		-t $(DOCKER_IMAGE) \
+		-f $< \
+		.
 
 build:
 	docker run --rm \
@@ -16,4 +20,10 @@ build:
 		-w /app/sway $(DOCKER_IMAGE) \
 			sh -c "make -C ../wlroots install && make PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) all build"
 
-.PHONY: all build
+shell:
+	docker run -it --rm \
+		-v `pwd`:/app:rw \
+		-w /app $(DOCKER_IMAGE) \
+			bash
+
+.PHONY: all build shell

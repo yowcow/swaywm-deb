@@ -6,7 +6,9 @@ ARTIFACTS = yowcow-sway.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(A
 
 INSTALL_DIR := /tmp/sway
 
+all: PATCH = patch/sway-$(PKGVERSION).patch
 all: sway
+	[ -f $(PATCH) ] && patch -p1 -N -d $< < $(PATCH) || true
 
 sway: CURRENT_REVISION = $(shell git -C $@ describe --tags)
 sway: force
