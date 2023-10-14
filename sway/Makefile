@@ -1,7 +1,6 @@
 include ../release.mk
 
 PKGVERSION = 1.8.1
-UBUNTU_RELEASE = $(shell lsb_release -rs)
 ARTIFACTS = yowcow-sway.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
 
 INSTALL_DIR := /tmp/sway

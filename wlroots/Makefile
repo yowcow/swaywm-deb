@@ -1,10 +1,9 @@
 include ../release.mk
 
 PKGVERSION = 0.16.2
-UBUNTU_RELEASE = $(shell lsb_release -rs)
 ARTIFACTS = yowcow-wlroots.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
 
-INSTALL_DIR := /tmp/wlroots
+INSTALL_DIR = /tmp/wlroots
 
 all: PATCH = patch/wlroots-$(PKGVERSION).patch
 all: wlroots
