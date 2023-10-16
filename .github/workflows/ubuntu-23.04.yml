@@ -6,20 +6,14 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
-    container:
-      image: ubuntu:23.04
     permissions:
       contents: write
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
-      - name: apt install
-        run: sh ./apt-install.ubuntu-23.04.sh
-      - name: build wlroots
-        run: make -C wlroots all build
-      - name: build sway
-        run: make -C wlroots install && make -C sway all build
-      - name: release
+      - name: Build
+        run: make UBUNTU_RELEASE=23.04 all build
+      - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
