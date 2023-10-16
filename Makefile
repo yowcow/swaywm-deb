@@ -1,5 +1,5 @@
-UBUNTU_RELEASE := 23.04
-DOCKER_IMAGE := swaywm-build:$(UBUNTU_RELEASE)
+UBUNTU_RELEASE = 23.04
+DOCKER_IMAGE = swaywm-build:$(UBUNTU_RELEASE)
 
 include release.mk
 
