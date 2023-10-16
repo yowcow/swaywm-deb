@@ -2,29 +2,29 @@ include ../release.mk
 
 PKGVERSION = 1.8.1
 ARTIFACTS = yowcow-sway.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
-
-INSTALL_DIR := /tmp/sway
+SRCDIR = sway
+DESTDIR := /tmp/sway
 
 all: PATCH = patch/sway-$(PKGVERSION).patch
-all: sway
+all: $(SRCDIR)
 	[ -f $(PATCH) ] && patch -p1 -N -d $< < $(PATCH) || true
 
-sway: CURRENT_REVISION = $(shell git -C $@ describe --tags)
-sway: force
+SRCDIR: CURRENT_REVISION = $(shell git -C $@ describe --tags)
+SRCDIR: force
 	[ ! -d $@ ] && git clone https://github.com/swaywm/sway.git $@ || true;
 	[ "$(CURRENT_REVISION)" != "$(PKGVERSION)" ] && git -C $@ fetch && git -C $@ checkout $(PKGVERSION) || true;
 
 build: $(ARTIFACTS)
 
-%.deb: $(INSTALL_DIR) $(INSTALL_DIR)/DEBIAN/control
+%.deb: $(DESTDIR) $(DESTDIR)/DEBIAN/control
 	dpkg-deb --build $< $@
 
-$(INSTALL_DIR):
-	cd sway \
+$(DESTDIR): $(SRCDIR)
+	cd $< \
 		&& meson setup build --prefix=/usr \
 		&& DESTDIR=$@ ninja -C build install
 
-$(INSTALL_DIR)/DEBIAN/control: control
+$(DESTDIR)/DEBIAN/control: control
 	mkdir -p $(dir $@)
 	cat $< \
 		| sed -e 's/{{PKGVERSION}}/$(PKGVERSION)/g' \
@@ -38,6 +38,6 @@ install: $(ARTIFACTS)
 force:
 
 clean:
-	rm -rf $(INSTALL_DIR) *.deb
+	rm -rf $(SRCDIR)/build $(DESTDIR) *.deb
 
 .PHONY: all build install clean

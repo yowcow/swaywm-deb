@@ -13,17 +13,23 @@ all: Dockerfile
 build:
 	docker run --rm \
 		-v `pwd`:/app:rw \
-		-w /app/wlroots $(DOCKER_IMAGE) \
-			sh -c "make PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) all build"
+		-w /app/wlroots \
+		$(DOCKER_IMAGE) sh -c "make PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) all build"
 	docker run --rm \
 		-v `pwd`:/app:rw \
-		-w /app/sway $(DOCKER_IMAGE) \
-			sh -c "make -C ../wlroots install && make PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) all build"
+		-w /app/sway \
+		$(DOCKER_IMAGE) sh -c "make -C ../wlroots install && make PKGRELEASE=$(PKGRELEASE) ARCH=$(ARCH) all build"
+
+clean:
+	docker run --rm \
+		-v `pwd`:/app:rw \
+		-w /app \
+		$(DOCKER_IMAGE) sh -c "make -C wlroots clean && make -C sway clean"
 
 shell:
 	docker run -it --rm \
 		-v `pwd`:/app:rw \
-		-w /app $(DOCKER_IMAGE) \
-			bash
+		-w /app \
+		$(DOCKER_IMAGE) bash
 
-.PHONY: all build shell
+.PHONY: all build clean shell
