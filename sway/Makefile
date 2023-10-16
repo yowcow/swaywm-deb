@@ -9,8 +9,8 @@ all: PATCH = patch/sway-$(PKGVERSION).patch
 all: $(SRCDIR)
 	[ -f $(PATCH) ] && patch -p1 -N -d $< < $(PATCH) || true
 
-SRCDIR: CURRENT_REVISION = $(shell git -C $@ describe --tags)
-SRCDIR: force
+$(SRCDIR): CURRENT_REVISION = $(shell git -C $@ describe --tags)
+$(SRCDIR): force
 	[ ! -d $@ ] && git clone https://github.com/swaywm/sway.git $@ || true;
 	[ "$(CURRENT_REVISION)" != "$(PKGVERSION)" ] && git -C $@ fetch && git -C $@ checkout $(PKGVERSION) || true;
 
