@@ -1,6 +1,6 @@
 include ../release.mk
 
-PKGVERSION = 1.8.1
+PKGVERSION = 1.9
 ARTIFACTS = yowcow-sway.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
 SRCDIR = sway
 DESTDIR := /tmp/sway
@@ -40,4 +40,7 @@ force:
 clean:
 	rm -rf $(SRCDIR)/build $(DESTDIR) *.deb
 
-.PHONY: all build install clean
+realclean: clean
+	rm -rf $(SRCDIR)
+
+.PHONY: all build install clean realclean

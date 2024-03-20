@@ -1,4 +1,4 @@
-PKGRELEASE = 2
+PKGRELEASE = 1
 UBUNTU_RELEASE = $(shell lsb_release -rs)
 PROCESSOR = $(shell uname -p)
 

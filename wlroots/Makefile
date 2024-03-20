@@ -1,6 +1,6 @@
 include ../release.mk
 
-PKGVERSION = 0.16.2
+PKGVERSION = 0.17.0
 ARTIFACTS = yowcow-wlroots.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
 SRCDIR = wlroots
 DESTDIR = /tmp/wlroots
@@ -40,4 +40,7 @@ force:
 clean:
 	rm -rf $(SRCDIR)/build $(DESTDIR) *.deb
 
-.PHONY: all build install clean
+realclean: clean
+	rm -rf $(SRCDIR)
+
+.PHONY: all build install clean realclean
