@@ -40,4 +40,7 @@ force:
 clean:
 	rm -rf $(SRCDIR)/build $(DESTDIR) *.deb
 
-.PHONY: all build install clean
+realclean: clean
+	rm -rf $(SRCDIR)
+
+.PHONY: all build install clean realclean

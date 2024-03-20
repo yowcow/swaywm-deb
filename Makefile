@@ -26,10 +26,16 @@ clean:
 		-w /app \
 		$(DOCKER_IMAGE) sh -c "make -C wlroots clean && make -C sway clean"
 
+realclean:
+	docker run --rm \
+		-v `pwd`:/app:rw \
+		-w /app \
+		$(DOCKER_IMAGE) sh -c "make -C wlroots realclean && make -C sway realclean"
+
 shell:
 	docker run -it --rm \
 		-v `pwd`:/app:rw \
 		-w /app \
 		$(DOCKER_IMAGE) bash
 
-.PHONY: all build clean shell
+.PHONY: all build clean realclean shell
