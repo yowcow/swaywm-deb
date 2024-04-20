@@ -1,6 +1,6 @@
 include ../release.mk
 
-PKGVERSION = 0.17.0
+PKGVERSION = 0.17.2
 ARTIFACTS = yowcow-wlroots.$(PKGVERSION)-$(PKGRELEASE).ubuntu-$(UBUNTU_RELEASE).$(ARCH).deb
 SRCDIR = wlroots
 DESTDIR = /tmp/wlroots
